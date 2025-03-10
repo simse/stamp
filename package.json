@@ -1,6 +1,6 @@
 {
   "name": "@simse/stamp",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "main": "dist/cli.js",
   "bin": {
     "stamp": "dist/cli.js"
