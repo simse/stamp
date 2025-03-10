@@ -1,6 +1,7 @@
 import { promisify } from 'node:util';
 import { exec as execCallback } from 'node:child_process';
 import { gzip } from 'node-gzip';
+import clc from 'cli-color';
 
 const exec = promisify(execCallback);
 
@@ -39,5 +40,22 @@ export const compressDiff = async (diff: string): Promise<string> => {
 export const applyDiff = async (repo: string, applyCmd: string) => {
   await exec(applyCmd, {
     cwd: repo,
+  });
+};
+
+export const colorizeGitDiff = (diffText: string): void => {
+  // Process each line with appropriate color
+  diffText.split('\n').forEach(line => {
+    if (line.startsWith('-')) {
+      console.log(clc.red(line));
+    } else if (line.startsWith('+')) {
+      console.log(clc.green(line));
+    } else if (line.startsWith('@')) {
+      console.log(clc.magenta(line));
+    } else if (line.startsWith('diff') || line.startsWith('index')) {
+      console.log(clc.blackBright(line));
+    } else {
+      console.log(clc.white(line));
+    }
   });
 };

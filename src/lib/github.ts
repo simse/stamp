@@ -22,19 +22,22 @@ export const getPullRequestDesc = async (repo: string): Promise<string> => {
   return JSON.parse(ghOutput)['body'];
 };
 
-const quote = (s: string) => `'` + s.replace(/'/g, `'"'`) + `'`;
-
 export const updatePullRequest = async (repo: string, diff: Diff) => {
   const currentDesc = await getPullRequestDesc(repo);
 
   const scrubbedDesc = scrubStamp(currentDesc);
-
   const stampedDesc = scrubbedDesc + '\n' + createStamp(diff);
 
+  const encodedDesc = Buffer.from(stampedDesc).toString('base64');
+
   // update PR description
-  await exec(`gh pr edit --body ${quote(stampedDesc)}`, {
-    cwd: repo,
-  });
+  try {
+    await exec(`echo '${encodedDesc}' | base64 --decode | gh pr edit --body-file -`, {
+      cwd: repo,
+    });
+  } catch (e: unknown) {
+    throw new Error('Github threw an error while updating the PR description: ' + e)
+  }
 };
 
 export const getDiffFromPullRequest = async (repo: string) => {
@@ -69,7 +72,7 @@ export const createStamp = (diff: Diff) => {
     '---',
     '<details>',
     '<summary>✨This PR is <strong>stamped</strong> with a patch✨</summary>',
-    '<h3>Apply this patch with <code>npx @simse/stamp apply</code>:</h3>',
+    '<h3>Apply this patch with <code>npx @simse/stamp use</code>:</h3>',
     '',
     '```diff',
     diff.diff,
