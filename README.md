@@ -1,22 +1,33 @@
-# stamp
+# stamp 🔖
 
-A Git tool that embeds test patches directly in PR descriptions for quick sharing and application.
+A Git tool that automatically embeds test patches directly in your PR descriptions using the GitHub CLI, making sharing and applying testing changes quick and seamless. ✨
 
-## Usage
-Create and embed patch with:
+## Usage 🚀
+Create a patch and ✨**automatically**✨ embed it in your PR description:
 ```bash
 npx @simse/stamp create
 ```
 
-Apply patch from PR with:
+![Made with VHS](https://vhs.charm.sh/vhs-5SLBEaApGClhSWzhibblER.gif)
+
+Apply a patch from a PR description:
 ```bash
 npx @simse/stamp use
 ```
 
-## Requirements
+![Made with VHS](https://vhs.charm.sh/vhs-6sXQErJH4EFpIE0z595sZi.gif)
+
+_Look ma, no hands! Or almost no hands..._
+
+## Requirements 📋
 - Github
-- Github CLI
+- Github CLI (`gh`) installed and authenticated
 - Git
 
-## Wait what?
-While PRs themselves are patches, sometimes you need extra code tweaks just for testing. `stamp` embeds these temporary modifications directly in PR descriptions. Create with `npx @simse/stamp create` and reviewers apply with `npx @simse/stamp use` - no separate branches or gists needed.
+## How it works ⚙️
+
+Stamp uses GitHub CLI to:
+
+1. Generate a patch from your changes
+2. Automatically embed the patch in your PR description
+3. Allow others to apply those changes with a single command

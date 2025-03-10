@@ -3,7 +3,7 @@ import { confirm } from '@inquirer/prompts';
 
 import { checkRequirements } from "../lib/precheck";
 import { getDiffFromPullRequest } from '../lib/github';
-import { applyDiff } from '../lib/diff';
+import { applyDiff, colorizeGitDiff } from '../lib/diff';
 import { isRepoDirty } from '../lib/repo';
 
 export type IUseCmdArgs = {
@@ -35,7 +35,7 @@ export const useCommand = async (args: IUseCmdArgs) => {
   })
 
   console.log()
-  console.log(diff.patch);
+  colorizeGitDiff(diff.patch);
 
   const shouldApply = await confirm({ message: 'Do you want to apply this patch?' });
 
